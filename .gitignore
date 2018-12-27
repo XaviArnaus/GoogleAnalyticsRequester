@@ -1,0 +1,5 @@
+vendor
+service-account-credentials.json
+.DS_Store
+keyfile.json
+node_modules
