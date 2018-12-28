@@ -101,7 +101,8 @@ function getResults($analytics, $profileId) {
       $parameters['metrics'],
       [
         'dimensions' => $parameters['dimensions'],
-        'sort' => $parameters['sort']
+        'sort' => $parameters['sort'],
+	'max-results' => 10000
       ]
    );
 }
