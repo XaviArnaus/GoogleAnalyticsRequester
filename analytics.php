@@ -11,7 +11,8 @@ $defaults = [
   'from' => '14daysAgo',
   'to' => 'today',
   'dimensions' => 'ga:date',
-  'sort' => '-ga:date'
+  'sort' => '-ga:date',
+  'simplify' => 0
 ];
 
 $analytics = initializeAnalytics();
@@ -28,6 +29,7 @@ function getQueryParameters()
   $parameters['to'] = isset($_GET['to']) ? $_GET['to'] : $defaults['to'];
   $parameters['dimensions'] = isset($_GET['dimensions']) ? $_GET['dimensions'] : $defaults['dimensions'];
   $parameters['sort'] = isset($_GET['sort']) ? $_GET['sort'] : $defaults['sort'];
+  $parameters['simplify'] = isset($_GET['simplify']) ? $_GET['simplify'] : $defaults['simplify'];
 
   return $parameters;
 }
@@ -102,14 +104,22 @@ function getResults($analytics, $profileId) {
       [
         'dimensions' => $parameters['dimensions'],
         'sort' => $parameters['sort'],
-	'max-results' => 10000
+	      'max-results' => 10000
       ]
    );
 }
 
 function printJsonResults($result) {
+  $count = 1;
   $cleaned = [];
+  $parameters = getQueryParameters();
+  $simplify = int($parameters['simplify']);
   foreach($result->getRows() as $row) {
+    if $simplify > 0 && ($count % $simplify != 0)
+    {
+      // If we want to reduce the amount of data (one each n iterations), apply it.
+      continue;
+    }
     $date = DateTime::createFromFormat('Ymd', $row[0]);
     $cleaned[]=array_merge([$date->format('Y-m-d')], array_map(function($value) { return intval($value); }, array_slice($row, 1)));
   }
