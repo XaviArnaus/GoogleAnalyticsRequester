@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 // Load the Google API PHP Client Library.
 require_once __DIR__ . '/vendor/autoload.php';
 
-$defaults = [
+$GLOBALS['defaults'] = [
   'metrics' => 'ga:users',
   'from' => '14daysAgo',
   'to' => 'today',
@@ -24,12 +24,12 @@ printJsonResults($results);
 function getQueryParameters()
 {
   $parameters = [];
-  $parameters['metrics'] = isset($_GET['metrics']) ? $_GET['metrics'] : $defaults['metrics'];
-  $parameters['from'] = isset($_GET['from']) ? $_GET['from'] : $defaults['from'];
-  $parameters['to'] = isset($_GET['to']) ? $_GET['to'] : $defaults['to'];
-  $parameters['dimensions'] = isset($_GET['dimensions']) ? $_GET['dimensions'] : $defaults['dimensions'];
-  $parameters['sort'] = isset($_GET['sort']) ? $_GET['sort'] : $defaults['sort'];
-  $parameters['simplify'] = isset($_GET['simplify']) ? $_GET['simplify'] : $defaults['simplify'];
+  $parameters['metrics'] = isset($_GET['metrics']) ? $_GET['metrics'] : $GLOBALS['defaults']['metrics'];
+  $parameters['from'] = isset($_GET['from']) ? $_GET['from'] : $GLOBALS['defaults']['from'];
+  $parameters['to'] = isset($_GET['to']) ? $_GET['to'] : $GLOBALS['defaults']['to'];
+  $parameters['dimensions'] = isset($_GET['dimensions']) ? $_GET['dimensions'] : $GLOBALS['defaults']['dimensions'];
+  $parameters['sort'] = isset($_GET['sort']) ? $_GET['sort'] : $GLOBALS['defaults']['sort'];
+  $parameters['simplify'] = isset($_GET['simplify']) ? $_GET['simplify'] : $GLOBALS['defaults']['simplify'];
 
   return $parameters;
 }
@@ -110,12 +110,13 @@ function getResults($analytics, $profileId) {
 }
 
 function printJsonResults($result) {
-  $count = 1;
+  $count = 0;
   $cleaned = [];
   $parameters = getQueryParameters();
-  $simplify = int($parameters['simplify']);
+  $simplify = intval($parameters['simplify']);
   foreach($result->getRows() as $row) {
-    if $simplify > 0 && ($count % $simplify != 0)
+    $count++;
+    if ($simplify > 0 && !($count % $simplify == 0))
     {
       // If we want to reduce the amount of data (one each n iterations), apply it.
       continue;
