@@ -34,6 +34,6 @@ from|string|`14daysAgo`|Data range start for queried metrics
 to|string|`today`|Data range end for queried metrics
 dimensions|string|`ga:date`|Which dimensions are used to divide the queried metrics. `ga:date` means that you'll get a row per day.
 sort|string|`-ga:date`|Wich dimension will be used to sort the queried metrics. Note that the minus in front means DESC order.
-simplify|int|0|Discards data from result, one each every `n` defined. A `0` means no simplification done. Useful for huge resultsets.
+simplify|int|0|Discards rows from result, returning only one every `n` defined. A `0` means no simplification done. Useful for huge resultsets.
 
 For an exhaustive reference of *metrics* and *dimensions* visit the [official documentation](https://developers.google.com/analytics/devguides/reporting/core/dimsmets) and play with the [Query Explorer](https://ga-dev-tools.appspot.com/query-explorer/)
